@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FOCUS IA - Leitor de Estudos</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap');
+
+    :root {
+      --bg-color: #0e0e0e;
+      --card-color: rgba(30, 30, 30, 0.8);
+      --text-color: #e4e4e4;
+      --accent-color: #4A90E2;
+      --glass-blur: 12px;
+      --border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Inter', 'Merriweather', sans-serif;
+      line-height: 1.9;
+      font-size: 18px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 0 16px;
+    }
+
+    .navbar {
+      text-align: center;
+      padding: 28px 0;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(var(--glass-blur));
+      background: rgba(14, 14, 14, 0.7);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 10;
+    }
+
+    .navbar h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.05em;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-grow: 1;
+    }
+
+    .form-box {
+      background-color: var(--card-color);
+      padding: 30px 26px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(var(--glass-blur));
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-box h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      background-color: #1a1a1a;
+      color: #ddd;
+    }
+
+    input::placeholder {
+      color: #777;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--accent-color);
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #3b7fc2;
+      transform: translateY(-2px);
+    }
+
+    .resultado {
+      margin: 40px auto;
+      padding: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      max-width: 800px;
+      width: 100%;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(var(--glass-blur));
+      background: rgba(20, 20, 20, 0.85);
+    }
+
+    .glass-top,
+    .glass-bottom {
+      position: sticky;
+      left: 0;
+      right: 0;
+      height: 60px;
+      backdrop-filter: blur(var(--glass-blur));
+      background: rgba(14, 14, 14, 0.7);
+      z-index: 5;
+    }
+
+    .glass-top {
+      top: 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .glass-bottom {
+      bottom: 0;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .resultado-content {
+      max-height: 75vh;
+      overflow-y: auto;
+      padding: 36px 30px;
+    }
+
+    .resultado h2 {
+      font-size: 24px;
+      color: var(--accent-color);
+      margin-bottom: 18px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .resultado h3 {
+      color: #f0f0f0;
+      font-size: 20px;
+      margin-top: 30px;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .resultado p, .resultado pre {
+      margin-bottom: 18px;
+      font-family: 'Merriweather', serif;
+      font-size: 17px;
+      line-height: 1.85;
+    }
+
+    .resultado pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background-color: #1e1e1e;
+      padding: 18px;
+      border-radius: 8px;
+      color: #dddddd;
+      overflow-x: auto;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        font-size: 17px;
+      }
+
+      .navbar h1 {
+        font-size: 24px;
+      }
+
+      .form-box {
+        padding: 24px 20px;
+      }
+
+      .resultado-content {
+        padding: 28px 20px;
+        max-height: 70vh;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar h1 {
+        font-size: 20px;
+      }
+
+      .form-box h2 {
+        font-size: 18px;
+      }
+
+      .resultado h2 {
+        font-size: 20px;
+      }
+
+      .resultado-content {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h1>FOCUS IA</h1>
+  </div>
+
+  <div class="container">
+    <div class="form-box">
+      <h2>Colar link de artigo</h2>
+      <form method="POST">
+        <input type="text" name="url" placeholder="https://exemplo.com" required />
+        <button type="submit">Ler</button>
+      </form>
+    </div>
+  </div>
+
+  {% if tema %}
+  <div class="resultado">
+    <div class="glass-top"></div>
+
+    <div class="resultado-content">
+      <h2>Tema: {{ tema }}</h2>
+
+      {% if resultado %}
+      <h3>Texto Extraído:</h3>
+      <pre>{{ resultado }}</pre>
+      {% endif %}
+
+      {% if ia %}
+      <h3>Explicação IA:</h3>
+      <pre>{{ ia }}</pre>
+      {% endif %}
+    </div>
+
+    <div class="glass-bottom"></div>
+  </div>
+  {% endif %}
+
+</body>
+</html>
