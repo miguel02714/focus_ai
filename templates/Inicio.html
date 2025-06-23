@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Focus IA</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    /* Reset e base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #121214; /* fundo escuro quase preto */
+      color: #e4e4e7; /* texto claro */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease-in-out;
+    }
+
+    a:hover {
+      color: #3b82f6; /* azul vivo */
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 1.5rem;
+      background-color: #1f1f23; /* mais claro que o fundo, suave */
+      border-bottom: 1px solid #27272a;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      font-size: 0.9rem;
+      user-select: none;
+      height: 5rem;
+    }
+
+    /* Container da logo e texto juntos */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem; /* espaço entre logo e texto */
+    }
+
+    .logo-container img.logo {
+      max-width: 60px;
+      max-height: 60px;
+      display: block;
+    }
+
+    .logo-container .logo-text {
+      font-weight: 700;
+      font-size: 2.25rem;
+      color: #3b82f6; /* azul */
+      user-select: none;
+    }
+
+    .navbar nav {
+      display: flex;
+      gap: 1.5rem;
+      font-weight: 500;
+      color: #a1a1aa; /* cinza claro */
+      align-items: center;
+    }
+
+    .navbar nav a {
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .navbar nav a:hover {
+      border-bottom-color: #3b82f6;
+      color: #3b82f6;
+    }
+
+    .navbar .actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .navbar .actions button {
+      font-weight: 600;
+      padding: 0.25rem 0.8rem;
+      border-radius: 0.375rem;
+      border: 1.5px solid transparent;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+      background-color: transparent;
+      color: #3b82f6;
+      border-color: #3b82f6;
+      white-space: nowrap;
+    }
+    .navbar .actions button:hover {
+      background-color: rgba(59, 130, 246, 0.15);
+    }
+    .btn-register {
+      background-color: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+    .btn-register:hover {
+      background-color: #2563eb;
+      border-color: #2563eb;
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 720px;
+      margin: 4rem auto 6rem;
+      padding: 0 1.5rem;
+      text-align: center;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      color: #d4d4d8; /* texto um pouco mais claro */
+    }
+
+    .badge {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #3b82f6;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .hero h1 {
+      font-weight: 800;
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      line-height: 1.1;
+      color: #fafafa;
+    }
+
+    .hero h1 span {
+      color: #3b82f6;
+    }
+
+    .hero p {
+      color: #a1a1aa; /* cinza claro */
+      font-size: 1.125rem;
+      max-width: 640px;
+      margin: 0 auto;
+      user-select: text;
+      line-height: 1.5;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .hero-buttons button {
+      flex: 1 1 45%;
+      min-width: 140px;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .hero-buttons .btn-primary {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .hero-buttons .btn-primary:hover {
+      background-color: #2563eb;
+    }
+
+    .hero-buttons .btn-secondary {
+      background-color: transparent;
+      color: #3b82f6;
+      border: 1.5px solid #3b82f6;
+    }
+
+    .hero-buttons .btn-secondary:hover {
+      background-color: rgba(59, 130, 246, 0.15);
+    }
+
+    /* Features */
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      max-width: 720px;
+      margin: 0 auto 4rem;
+    }
+
+    .feature {
+      text-align: center;
+      max-width: 180px;
+      user-select: none;
+      color: #c7c7d9;
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      user-select: none;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      font-size: 1.125rem;
+      margin-bottom: 0.25rem;
+      color: #fafafa;
+    }
+
+    .feature-desc {
+      font-size: 0.95rem;
+      color: #a1a1aa;
+      line-height: 1.3;
+    }
+
+    /* Responsividade */
+    @media (max-width: 640px) {
+      .navbar {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        height: auto;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .navbar nav {
+        justify-content: center;
+        width: 100%;
+        gap: 1rem;
+        order: 3;
+      }
+
+      .navbar .actions {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .logo-container {
+        justify-content: center;
+        width: 100%;
+        order: 1;
+        margin-bottom: 0.25rem;
+      }
+
+      .hero-buttons button {
+        flex-basis: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar" role="banner">
+    <div class="logo-container">
+      <img src="Design sem nome (13).png" class="logo" alt="Logo Focus IA" />
+      <div class="logo-text" aria-label="Logo Focus IA">FOCUS IA</div>
+    </div>
+    <nav role="navigation" aria-label="Menu principal">
+      <a href="#">Início</a>
+      <a href="#">Como funciona</a>
+      <a href="#">Parcerias</a>
+    </nav>
+    <div class="actions">
+        <form action="/login">
+      <button type="submit" class="btn-login" type="button">Entrar</button>
+      </form>
+      <form action="/registro">
+      <button type="submit" class="btn-register" type="button">Registrar</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="hero" role="main">
+    <div class="badge" aria-label="Slogan">🌐 Democratizando o conhecimento mundial</div>
+    <h1>
+      Aprenda qualquer coisa, em <span>qualquer idioma</span>
+    </h1>
+    <p>
+      A FOCUS IA conecta crianças, adolescentes e adultos ao conhecimento através de traduções naturais em mais de 105 idiomas e resumos inteligentes.<br />
+      Como ter um amigo multilíngue que torna qualquer conteúdo acessível.
+    </p>
+    <div class="hero-buttons">
+        <form action="/registro">
+      <button type="submit" btn-primary" type="button">Começar Gratuitamente</button>
+      </form>
+      <button class="btn-secondary" type="button">Ver Demonstração</button>
+    </div>
+
+    <section class="features" aria-label="Principais funcionalidades">
+      <article class="feature">
+        <div class="feature-icon" aria-hidden="true">🌍</div>
+        <h3 class="feature-title">105+ Idiomas</h3>
+        <p class="feature-desc">Tradução natural e humanizada</p>
+      </article>
+      <article class="feature">
+        <div class="feature-icon" aria-hidden="true">📖</div>
+        <h3 class="feature-title">Resumos IA</h3>
+        <p class="feature-desc">Powered by Neurabot</p>
+      </article>
+      <article class="feature">
+        <div class="feature-icon" aria-hidden="true">🤝</div>
+        <h3 class="feature-title">Parcerias ONGs</h3>
+        <p class="feature-desc">Impacto social real</p>
+      </article>
+    </section>
+  </main>
+
+</body>
+</html>

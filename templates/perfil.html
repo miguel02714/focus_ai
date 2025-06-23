@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Perfil</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ccc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+      background: #1e1e1e;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.7);
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: #eee;
+      text-align: center;
+    }
+
+    p {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .label {
+      color: #888;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      background-color: #4a90e2; /* azul suave e clean */
+      box-shadow: 0 4px 10px rgb(74 144 226 / 0.3);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #357abd; /* azul escuro, clean */
+      box-shadow: 0 6px 16px rgb(53 122 189 / 0.45);
+    }
+
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      background: #222;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+
+    .explicacoes-salvas {
+      margin-top: 3rem;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .explicacoes-salvas h2 {
+      color: #4a90e2; /* azul suave */
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    .explicacao-card {
+      display: flex;
+      align-items: center;
+      background: #1a1a1a;
+      border: 1px solid #2c2c2c;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+
+    .explicacao-card:hover {
+      background-color: #2a2a2a;
+    }
+
+    .explicacao-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-right: 1rem;
+    }
+
+    .explicacao-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .explicacao-info strong {
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    .explicacao-info span {
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    @media (max-width: 500px) {
+      .explicacao-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+
+      .explicacao-card img {
+        width: 100%;
+        height: auto;
+      }
+
+      .explicacao-info {
+        align-items: flex-start;
+      }
+    }
+
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: #1e1e1e;
+      padding: 2.5rem 2.5rem 3rem 2.5rem;
+      border-radius: 14px;
+      max-width: 700px;
+      width: 100%;
+      color: #ddd;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+      position: relative;
+      max-height: 80vh;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 1rem;
+      color: #4a90e2; /* azul suave */
+    }
+
+    .modal-content pre {
+      background-color: #111;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      white-space: pre-wrap;
+    }
+
+    .fechar {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-size: 2rem;
+      color: #4a90e2;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: color 0.25s ease;
+      padding: 0;
+      line-height: 1;
+      user-select: none;
+    }
+    .fechar:hover {
+      color: #357abd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Perfil do Usuário</h1>
+
+    <div>
+      <div class="label">Nome</div>
+      <p>{{ current_user.nome }}</p>
+    </div>
+
+    <div>
+      <div class="label">Email</div>
+      <p>{{ current_user.email }}</p>
+    </div>
+
+    <form method="POST">
+      <div class="label">Idioma</div>
+      <select name="idioma" id="idioma" required>
+        <option value="">-- Selecione um idioma --</option>
+        {% set idiomas = [
+          'inglês', 'mandarim', 'hindi', 'espanhol', 'francês', 'árabe', 'bengali', 'russo', 'português', 'urdu',
+          'indonésio', 'alemão', 'japonês', 'marathi', 'telugu', 'turco', 'tâmil', 'coreano', 'vietnamita', 'hauçá',
+          'chinês wu', 'javanês', 'panjabi', 'persa', 'swahili', 'gujarati', 'italiano', 'tailandês', 'birmanês', 'ucraniano',
+          'polonês', 'canarim', 'malayalam', 'oriá', 'sindi', 'nepali', 'sundanês', 'romeno', 'pastó', 'tagalo',
+          'gan chinês', 'malásio', 'sérvio', 'bielorrusso', 'tcheco', 'hebraico', 'grego', 'holandês', 'cazaque', 'zulu',
+          'xhosa', 'cherokee', 'tigrínia', 'laosiano', 'eslovaco', 'finlandês', 'dinamarquês', 'norueguês', 'estoniano', 'lituano',
+          'letão', 'islandês', 'georgiano', 'armênio', 'albanês', 'mongol', 'quirguiz', 'uzbeque', 'tajique', 'africâner',
+          'somali', 'amárico', 'checheno', 'iorubá', 'fula', 'wolof', 'twi', 'igbo', 'creole haitiano', 'maori',
+          'sinhala', 'tétum', 'dzongkha', 'língua samoana', 'língua fijiana', 'língua guarani', 'língua mapuche', 'língua quechua',
+          'língua aimará', 'língua nahuatl', 'língua basca', 'língua catalã', 'luxemburguês', 'irlandês', 'gaélico escocês',
+          'esloveno', 'bósnio', 'macedônio', 'ladino', 'húngaro', 'bretão', 'frísio', 'tártaro', 'bashkir'
+        ] %}
+        {% for idioma in idiomas %}
+          <option value="{{ idioma }}" {% if current_user.idioma == idioma %}selected{% endif %}>{{ idioma|upper }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Salvar Idioma</button>
+    </form>
+
+    <form action="/index">
+      <button type="submit">Voltar</button>
+    </form>
+  </div>
+
+  <!-- Seção de explicações salvas -->
+  <div class="explicacoes-salvas">
+    <h2>Suas Explicações Salvas</h2>
+    {% if current_user.explicacoes %}
+      {% for explicacao in current_user.explicacoes %}
+        <div class="explicacao-card" 
+             onclick="abrirModal(`{{ explicacao.tema }}`, `{{ explicacao.texto_ia | e | replace('\n', '\\n') }}`)">
+          <img src="{{ explicacao.imagem_url or 'https://via.placeholder.com/80x80?text=Sem+Imagem' }}" alt="{{ explicacao.tema }}">
+          <div class="explicacao-info">
+            <strong>{{ explicacao.tema }}</strong>
+            <span>{{ explicacao.curtidas }} pessoas salvaram</span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="text-align: center;">Você ainda não salvou nenhuma explicação.</p>
+    {% endif %}
+  </div>
+
+  <!-- Modal de explicação detalhada -->
+  <div id="modal-explicacao" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-tema">
+      <button class="fechar" aria-label="Fechar modal" onclick="fecharModal()">✖</button>
+      <h2 id="modal-tema"></h2>
+      <pre id="modal-texto"></pre>
+    </div>
+  </div>
+
+  <script>
+    function abrirModal(tema, texto) {
+      document.getElementById("modal-tema").innerText = tema;
+      document.getElementById("modal-texto").innerText = texto;
+      document.getElementById("modal-explicacao").style.display = "flex";
+      document.body.style.overflow = "hidden"; // trava scroll do fundo
+    }
+
+    function fecharModal() {
+      document.getElementById("modal-explicacao").style.display = "none";
+      document.body.style.overflow = "auto"; // libera scroll
+    }
+
+    // Fecha modal clicando fora do conteúdo
+    window.onclick = function(event) {
+      const modal = document.getElementById("modal-explicacao");
+      if (event.target === modal) {
+        fecharModal();
+      }
+    };
+  </script>
+</body>
+</html>
